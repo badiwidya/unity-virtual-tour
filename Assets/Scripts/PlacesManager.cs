@@ -55,10 +55,13 @@ public class PlacesManager : MonoBehaviour
 
     [Header("Referensi Komponen Panel Kuis")]
     public GameObject quizPanelObject;
-
     public TMP_Text questionText;
     public Button[] answerButtons = new Button[3];
 
+    [Header("Referensi Transisi")]
+    public Image fadeImage;
+    public float fadeDuration = 0.5f;
+    
     private int _currentPlaceIndex = 0;
     private int _currentNarrationPageIndex = 0;
     private readonly Color[] _originalButtonColors = new Color[3];
@@ -251,5 +254,30 @@ public class PlacesManager : MonoBehaviour
         if (currentPlace.sphereObject != null) currentPlace.sphereObject.SetActive(false);
         if (currentPlace.narrationPanel != null) currentPlace.narrationPanel.SetActive(false);
         if (currentPlace.hasQuiz && quizPanelObject != null) quizPanelObject.SetActive(false);
+    }
+    
+    private IEnumerator Fade(float targetAlpha)
+    {
+        var startAlpha = fadeImage.color.a;
+        var elapsedTime = 0f;
+
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            var newAlpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
+            fadeImage.color = new Color(0, 0, 0, newAlpha);
+            yield return null;
+        }
+
+        fadeImage.color = new Color(0, 0, 0, targetAlpha);
+    }
+
+    private IEnumerator TransitionToPlace(int index)
+    {
+        yield return StartCoroutine(Fade(1f));
+
+        ShowPlace(index);
+
+        yield return StartCoroutine(Fade(0f));
     }
 }
