@@ -68,6 +68,8 @@ public class PlacesManager : MonoBehaviour
 
     void Start()
     {
+        if (fadeImage != null) fadeImage.color = new Color(0, 0, 0, 1);
+        
         for (int i = 0; i < answerButtons.Length; i++)
         {
             _originalButtonColors[i] = answerButtons[i].GetComponent<Image>().color;
@@ -81,7 +83,7 @@ public class PlacesManager : MonoBehaviour
 
         if (quizPanelObject != null) quizPanelObject.SetActive(false);
 
-        ShowPlace(0);
+        StartCoroutine(TransitionToPlace(0));
     }
 
     private void ShowPlace(int index)
@@ -106,7 +108,7 @@ public class PlacesManager : MonoBehaviour
     {
         var nextIndex = _currentPlaceIndex + 1;
         if (nextIndex >= allPlaces.Length) nextIndex = 0;
-        ShowPlace(nextIndex);
+        StartCoroutine(TransitionToPlace(nextIndex));
     }
 
     public void ShowNarrationForCurrentPlace()
