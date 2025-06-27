@@ -4,4 +4,4 @@
 
 - Hamzah Hudzaifah - G6401231011
 - Berton Adiwidya Wibowo - G6401231043
-- Muhammad Ihsan Fadhillah
+- Muhammad Ihsan Fadhillah - G6401231053
