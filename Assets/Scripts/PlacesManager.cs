@@ -1,3 +1,4 @@
+using System;
 using JetBrains.Annotations;
 using UnityEngine;
 using TMPro;
@@ -131,6 +132,11 @@ public class PlacesManager : MonoBehaviour
                                                      currentPlace.narrationPages.Length - 1);
 
         narrationContinueButtonText.text = currentPlace.quizPanel != null ? "Lanjut ke Kuis" : "Selanjutnya";
+
+        if (Array.IndexOf(allPlaces, currentPlace) == allPlaces.Length - 1)
+        {
+            narrationContinueButtonText.text = "Kembali ke Awal";
+        }
     }
 
     public void OnContinueButtonPressed()
