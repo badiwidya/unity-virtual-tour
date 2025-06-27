@@ -23,6 +23,7 @@ public class PlaceData
 public class GameManager : MonoBehaviour
 {
     public PlaceData[] allPlaces;
+    public UIPositioner uiPositioner;
 
     public TMP_Text narrationDisplayText;
 
@@ -82,6 +83,7 @@ public class GameManager : MonoBehaviour
 
         if (currentPlace.narrationPanel == null) return;
 
+        uiPositioner.PositionObjectInFrontOfPlayer(currentPlace.narrationPanel);
         currentPlace.narrationPanel.SetActive(true);
         UpdateNarrationContent();
     }
@@ -97,6 +99,7 @@ public class GameManager : MonoBehaviour
 
         if (currentPlace.narrationPanel != null) currentPlace.narrationPanel.SetActive(false);
 
+        uiPositioner.PositionObjectInFrontOfPlayer(currentPlace.quizPanel);
         currentPlace.quizPanel.SetActive(true);
     }
 
