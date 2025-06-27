@@ -20,7 +20,7 @@ public class PlaceData
     public NarrationPage[] narrationPages;
 }
 
-public class GameManager : MonoBehaviour
+public class PlacesManager : MonoBehaviour
 {
     public PlaceData[] allPlaces;
     public UIPositioner uiPositioner;
