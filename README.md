@@ -15,7 +15,7 @@ Pastikan prasyarat ini tercapai sebelum masuk ke tahap selanjutnya:
 
 > ⚠️ Note: pastikan versi Unity Editor sama `**6000.1 LTS**`, jika tidak, proyek ini tidak akan bisa dijalankan.
 
-1. ### Clone repository ini.
+#### 1. Clone repository ini.
 
 Buka terminal dan masukkan perintah:
 
@@ -23,15 +23,15 @@ Buka terminal dan masukkan perintah:
 git clone https://github.com/badiwidya/unity-virtual-tour.git
 ```
 
-2. ### Buka Unity Hub.
+#### 2. Buka Unity Hub.
 
-3. ### Tekan tombol `Add`.
+#### 3. Tekan tombol `Add`.
 
-4. ### Pilih folder dari [repo](#clone-repository-ini) ini yang ada komputer Anda.
+#### 4. Pilih folder dari [repo](#clone-repository-ini) ini yang ada komputer Anda.
 
-5. ### Pastikan versi Unity Editor sesuai, instal jika diperlukan, lalu buka proyek.
+#### 5. Pastikan versi Unity Editor sesuai, instal jika diperlukan, lalu buka proyek.
 
-6. ### Setelah proyek dimuat di Unity Editor, tekan tombol `▶` untuk menjalankan.
+#### 6. Setelah proyek dimuat di Unity Editor, tekan tombol `▶` untuk menjalankan.
 
 Nikmati pengalaman _virtual tour_ di **Taman Kolaborasi** dan **Taman Inovasi** ini!
 
@@ -45,6 +45,6 @@ Nikmati pengalaman _virtual tour_ di **Taman Kolaborasi** dan **Taman Inovasi** 
 
 ![Quiz Wrong Choice](Pictures/quiz-wrong.png)
 
-![Quiz Correct Choice](Pictures/quiz-correct.png)
+![Quiz Correct Choice](Pictures/quiz-right.png)
 
 
