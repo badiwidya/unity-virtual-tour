@@ -1,8 +1,25 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+
+[System.Serializable]
+public class AnswerData
+{
+    public string answerText;
+    public bool isCorrect;
+}
+
+[System.Serializable]
+public class QuizData
+{
+    [TextArea(3, 5)] public string questionText;
+
+    public AnswerData[] answers = new AnswerData[3];
+}
 
 [System.Serializable]
 public class NarrationPage
@@ -16,7 +33,9 @@ public class PlaceData
     public string placeName;
     public GameObject sphereObject;
     public GameObject narrationPanel;
-    [CanBeNull] public GameObject quizPanel;
+
+    public bool hasQuiz;
+    public QuizData quizData;
 
     public NarrationPage[] narrationPages;
 }
@@ -26,32 +45,43 @@ public class PlacesManager : MonoBehaviour
     public PlaceData[] allPlaces;
     public UIPositioner uiPositioner;
 
+    [Header("Referensi Komponen Panel Narasi")]
     public TMP_Text narrationDisplayText;
 
     public Button narrationPreviousButton;
-
     public Button narrationNextButton;
-
     public Button narrationContinueButton;
-
     public TMP_Text narrationContinueButtonText;
+
+    [Header("Referensi Komponen Panel Kuis")]
+    public GameObject quizPanelObject;
+
+    public TMP_Text questionText;
+    public Button[] answerButtons = new Button[3];
 
     private int _currentPlaceIndex = 0;
     private int _currentNarrationPageIndex = 0;
+    private readonly Color[] _originalButtonColors = new Color[3];
 
     void Start()
     {
+        for (int i = 0; i < answerButtons.Length; i++)
+        {
+            _originalButtonColors[i] = answerButtons[i].GetComponent<Image>().color;
+        }
+
         foreach (var place in allPlaces)
         {
             if (place.sphereObject != null) place.sphereObject.SetActive(false);
             if (place.narrationPanel != null) place.narrationPanel.SetActive(false);
-            if (place.quizPanel != null) place.quizPanel.SetActive(false);
         }
+
+        if (quizPanelObject != null) quizPanelObject.SetActive(false);
 
         ShowPlace(0);
     }
 
-    public void ShowPlace(int index)
+    private void ShowPlace(int index)
     {
         if (index < 0 || index >= allPlaces.Length) return;
 
@@ -78,9 +108,9 @@ public class PlacesManager : MonoBehaviour
 
     public void ShowNarrationForCurrentPlace()
     {
-        var currentPlace = allPlaces[_currentPlaceIndex];
+        if (quizPanelObject != null) quizPanelObject.SetActive(false);
 
-        if (currentPlace.quizPanel != null) currentPlace.quizPanel.SetActive(false);
+        var currentPlace = allPlaces[_currentPlaceIndex];
 
         if (currentPlace.narrationPanel == null) return;
 
@@ -92,7 +122,7 @@ public class PlacesManager : MonoBehaviour
     public void ShowQuizForCurrentPlace()
     {
         var currentPlace = allPlaces[_currentPlaceIndex];
-        if (currentPlace.quizPanel == null)
+        if (!currentPlace.hasQuiz)
         {
             ShowNextPlace();
             return;
@@ -100,8 +130,70 @@ public class PlacesManager : MonoBehaviour
 
         if (currentPlace.narrationPanel != null) currentPlace.narrationPanel.SetActive(false);
 
-        uiPositioner.PositionObjectInFrontOfPlayer(currentPlace.quizPanel);
-        currentPlace.quizPanel.SetActive(true);
+        questionText.text = currentPlace.quizData.questionText;
+
+        for (int i = 0; i < answerButtons.Length; i++)
+        {
+            answerButtons[i].GetComponent<Image>().color = _originalButtonColors[i];
+            answerButtons[i].GetComponentInChildren<TMP_Text>().text = currentPlace.quizData.answers[i].answerText;
+            answerButtons[i].interactable = true;
+
+            answerButtons[i].onClick.RemoveAllListeners();
+            var answerIndex = i;
+            answerButtons[i].onClick.AddListener(() => OnAnswerSelected(answerIndex));
+        }
+
+        uiPositioner.PositionObjectInFrontOfPlayer(quizPanelObject);
+        quizPanelObject.SetActive(true);
+    }
+
+    public void OnAnswerSelected(int selectedIndex)
+    {
+        var currentPlace = allPlaces[_currentPlaceIndex];
+
+        var isCorrect = currentPlace.quizData.answers[selectedIndex].isCorrect;
+
+        if (isCorrect)
+        {
+            StartCoroutine(CorrectAnswerFeedback(answerButtons[selectedIndex]));
+        }
+        else
+        {
+            StartCoroutine(IncorrectAnswerFeedback(answerButtons[selectedIndex]));
+        }
+    }
+
+    // ReSharper disable Unity.PerformanceAnalysis
+    private IEnumerator IncorrectAnswerFeedback(Button selectedButton)
+    {
+        var originalText = selectedButton.GetComponentInChildren<TMP_Text>().text;
+
+        selectedButton.GetComponent<Image>().color = Color.red;
+        selectedButton.GetComponentInChildren<TMP_Text>().text = "SALAH";
+        selectedButton.interactable = false;
+
+        yield return new WaitForSeconds(1.5f);
+
+        var buttonIndex = Array.IndexOf(answerButtons, selectedButton);
+        selectedButton.GetComponent<Image>().color = _originalButtonColors[buttonIndex];
+        selectedButton.GetComponentInChildren<TMP_Text>().text = originalText;
+        selectedButton.interactable = true;
+    }
+
+    // ReSharper disable Unity.PerformanceAnalysis
+    private IEnumerator CorrectAnswerFeedback(Button selectedButton)
+    {
+        foreach (var btn in answerButtons)
+        {
+            btn.interactable = false;
+        }
+
+        selectedButton.GetComponent<Image>().color = Color.green;
+        selectedButton.GetComponentInChildren<TMP_Text>().text = "BENAR";
+
+        yield return new WaitForSeconds(1.5f);
+
+        ShowNextPlace();
     }
 
     public void ShowNextNarrationPage()
@@ -131,7 +223,7 @@ public class PlacesManager : MonoBehaviour
         narrationContinueButton.gameObject.SetActive(_currentNarrationPageIndex ==
                                                      currentPlace.narrationPages.Length - 1);
 
-        narrationContinueButtonText.text = currentPlace.quizPanel != null ? "Lanjut ke Kuis" : "Selanjutnya";
+        narrationContinueButtonText.text = currentPlace.hasQuiz ? "Lanjut ke Kuis" : "Selanjutnya";
 
         if (Array.IndexOf(allPlaces, currentPlace) == allPlaces.Length - 1)
         {
@@ -142,7 +234,7 @@ public class PlacesManager : MonoBehaviour
     public void OnContinueButtonPressed()
     {
         var currentPlace = allPlaces[_currentPlaceIndex];
-        if (currentPlace.quizPanel != null)
+        if (currentPlace.hasQuiz)
         {
             ShowQuizForCurrentPlace();
         }
@@ -158,6 +250,6 @@ public class PlacesManager : MonoBehaviour
         var currentPlace = allPlaces[_currentPlaceIndex];
         if (currentPlace.sphereObject != null) currentPlace.sphereObject.SetActive(false);
         if (currentPlace.narrationPanel != null) currentPlace.narrationPanel.SetActive(false);
-        if (currentPlace.quizPanel != null) currentPlace.quizPanel.SetActive(false);
+        if (currentPlace.hasQuiz && quizPanelObject != null) quizPanelObject.SetActive(false);
     }
 }
