@@ -146,7 +146,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11051118}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -28.8}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -592,11 +592,11 @@ MonoBehaviour:
       - answerText: Agutus 1945
         isCorrect: 0
     narrationPages:
-    - narrationText: "Dibangun sejak bulan Februari 2022. Pembangunan taman ini melibatkan
+    - narrationText: Dibangun sejak bulan Februari 2022. Pembangunan taman ini melibatkan
         ahli persarian, ahli pertamanan, desainer dari Arsitektur Lanskap dan melibatkan
         Sarjana Teknik Sipil sejak diskusi internal. Taman ini adalah sebuah persembahan
-        istimewa dari para alumni Angkatan 14, yang dikenal dengan nama Genksi\u2014Generasi
-        Kreatif Seni dan Intelektual."
+        istimewa dari para alumni Angkatan 14, yang dikenal dengan nama Genksi (Generasi
+        Kreatif Seni dan Intelektual).
     - narrationText: Mereka membangun taman ini untuk memperingati 45 tahun perjalanan
         mereka setelah lulus, sebagai wujud dedikasi dan kebanggaan kepada almamater
         yang telah membentuk mereka. Nama 'Taman Kolaborasi' diberikan langsung oleh
@@ -1880,7 +1880,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 939520593}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -28.8}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3605,7 +3605,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -18.09, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1938875048
