@@ -27,7 +27,7 @@ git clone https://github.com/badiwidya/unity-virtual-tour.git
 
 #### 3. Tekan tombol `Add`.
 
-#### 4. Pilih folder dari [repo](#clone-repository-ini) ini yang ada komputer Anda.
+#### 4. Pilih folder dari [repo](#1-clone-repository-ini) ini yang ada komputer Anda.
 
 #### 5. Pastikan versi Unity Editor sesuai, instal jika diperlukan, lalu buka proyek.
 
